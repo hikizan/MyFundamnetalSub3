@@ -12,9 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFundamentalSubTwo">
         <activity
-            android:name="com.hikizan.myfundamentalsubthree.ui.SplashActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:exported="true">
+            android:name=".ui.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,10 +25,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.hikizan.myfundamentalsubthree.ui.DetailActivity"
+            android:name=".ui.DetailActivity"
             android:exported="false" />
         <activity
-            android:name="com.hikizan.myfundamentalsubthree.ui.MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true" />
     </application>
 
