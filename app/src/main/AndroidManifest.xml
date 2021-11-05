@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hikizan.myfundamentalsubtwo">
+    package="com.hikizan.myfundamentalsubthree">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFundamentalSubTwo">
         <activity
-            android:name=".ui.SplashActivity"
+            android:name="com.hikizan.myfundamentalsubthree.ui.SplashActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:exported="true">
             <intent-filter>
@@ -22,10 +22,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.DetailActivity"
+            android:name="com.hikizan.myfundamentalsubthree.ui.DetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name="com.hikizan.myfundamentalsubthree.ui.MainActivity"
             android:exported="true" />
     </application>
 
