@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">GitZan</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Search Username</string>
+    <string name="github_name">Name Github</string>
+    <string name="github_username">Username Github</string>
+    <string name="github_company">Company Github</string>
+    <string name="repository">Repository</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="data_not_found">Data Not Found</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_text_1">Followers</string>
+    <string name="tab_text_2">Following</string>
+</resources>
