@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GitZan</string>
+    <string name="app_name">GitsZan</string>
     <string name="search">Search</string>
     <string name="search_hint">Search Username</string>
     <string name="github_name">Name Github</string>

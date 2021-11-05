@@ -16,6 +16,7 @@
             android:id="@+id/header"
             android:layout_width="0dp"
             android:layout_height="135dp"
+            style="@style/BackgroundAccent"
             android:background="@drawable/bottom_rounded"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +65,7 @@
                     android:layout_marginEnd="12dp"
                     android:layout_marginBottom="8dp"
                     android:layout_toEndOf="@+id/cv_img"
-                    android:textColor="@color/black"
+                    style="@style/TextColorOnTheme"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     tools:text="@string/github_name" />
@@ -183,8 +184,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/white"
-            app:tabTextColor="@color/black"
+            style="@style/BackgroundAccent.textColor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guideline3"/>

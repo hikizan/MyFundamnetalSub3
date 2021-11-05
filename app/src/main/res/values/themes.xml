@@ -40,4 +40,17 @@
         <item name="cardCornerRadius">8dp</item>
         <item name="layout_constraintWidth_percent">0.26</item>
     </style>
+
+    <style name="BackgroundAccent">
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="BackgroundAccent.textColor">
+        <item name="android:backgroundTint">?attr/colorOnPrimary</item>
+        <item name="tabTextColor">@color/black</item>
+    </style>
+
+    <style name="TextColorOnTheme">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

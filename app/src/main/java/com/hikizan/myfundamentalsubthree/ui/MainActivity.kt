@@ -6,10 +6,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hikizan.myfundamentalsubthree.R
 import com.hikizan.myfundamentalsubthree.adapter.GithubUserAdapter
@@ -18,9 +24,13 @@ import com.hikizan.myfundamentalsubthree.databinding.ActivityMainBinding
 import com.hikizan.myfundamentalsubthree.model.detail.ResponseDetail
 import com.hikizan.myfundamentalsubthree.model.search.ResponseSearch
 import com.hikizan.myfundamentalsubthree.model.users.ResponseUsers
+import com.hikizan.myfundamentalsubthree.preference.SettingPreferences
 import com.hikizan.myfundamentalsubthree.presenter.UsersPresenter
+import com.hikizan.myfundamentalsubthree.ui.viewmodel.SettingViewModel
+import com.hikizan.myfundamentalsubthree.ui.viewmodel.SettingViewModelFactory
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class MainActivity : AppCompatActivity(), UsersContract.usersView {
 
@@ -73,6 +83,17 @@ class MainActivity : AppCompatActivity(), UsersContract.usersView {
             }
         })
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.i_setting -> {
+                val moveSetting = Intent(this, SettingActivity::class.java)
+                startActivity(moveSetting)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initPresenter() {
