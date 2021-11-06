@@ -91,6 +91,10 @@ class MainActivity : AppCompatActivity(), UsersContract.usersView {
                 val moveSetting = Intent(this, SettingActivity::class.java)
                 startActivity(moveSetting)
             }
+            R.id.i_fav -> {
+                val moveFav = Intent(this, FavoriteActivity::class.java)
+                startActivity(moveFav)
+            }
         }
 
         return super.onOptionsItemSelected(item)
