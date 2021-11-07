@@ -13,7 +13,8 @@ import com.hikizan.myfundamentalsubthree.model.detail.ResponseDetail
 
 class DetailActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityDetailBinding
+    private var _activityDetailBinding: ActivityDetailBinding? = null
+    private val binding get() = _activityDetailBinding
 
     companion object {
         const val EXTRA_DATA = "extra_data"
@@ -27,18 +28,18 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        _activityDetailBinding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(this)
-        binding.viewPager.adapter = sectionsPagerAdapter
-        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, posistion ->
+        binding?.viewPager?.adapter = sectionsPagerAdapter
+        TabLayoutMediator(binding?.tabs!!, binding?.viewPager!!) { tab, posistion ->
             tab.text = resources.getString(TAB_TITLES[posistion])
         }.attach()
 
 
         val responseDetail: ResponseDetail? = intent.getParcelableExtra(EXTRA_DATA)
-        binding.apply {
+        binding?.apply {
             tvItemName.text = responseDetail?.name ?: "-"
             tvItemLocation.text = responseDetail?.location ?: "="
             tvItemCompany.text = responseDetail?.company ?: "-"
@@ -49,7 +50,7 @@ class DetailActivity : AppCompatActivity() {
 
         Glide.with(this)
             .load(responseDetail?.avatarUrl)
-            .into(binding.imgItemPhoto)
+            .into(binding!!.imgItemPhoto)
 
         supportActionBar?.elevation = 0f
         supportActionBar?.title = responseDetail?.login
@@ -59,14 +60,22 @@ class DetailActivity : AppCompatActivity() {
 
     private fun numberFont() {
         if (applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            binding.tvItemFollowers.textSize = 30F
-            binding.tvItemFollowing.textSize = 30F
-            binding.tvItemRepository.textSize = 30F
-
+            binding?.apply {
+                tvItemFollowers.textSize = 30F
+                tvItemFollowing.textSize = 30F
+                tvItemRepository.textSize = 30F
+            }
         } else {
-            binding.tvItemFollowers.textSize = 24F
-            binding.tvItemFollowing.textSize = 24F
-            binding.tvItemRepository.textSize = 24F
+            binding?.apply {
+                tvItemFollowers.textSize = 24F
+                tvItemFollowing.textSize = 24F
+                tvItemRepository.textSize = 24F
+            }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _activityDetailBinding = null
     }
 }
