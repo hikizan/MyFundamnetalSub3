@@ -9,14 +9,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="16dp"
+        android:paddingBottom="16dp">
 
         <ImageView
             android:id="@+id/header"
+            style="@style/BackgroundAccent"
             android:layout_width="0dp"
             android:layout_height="135dp"
-            style="@style/BackgroundAccent"
             android:background="@drawable/bottom_rounded"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,6 +58,7 @@
 
                 <TextView
                     android:id="@+id/tv_item_name"
+                    style="@style/TextColorOnTheme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/cv_img"
@@ -65,7 +66,6 @@
                     android:layout_marginEnd="12dp"
                     android:layout_marginBottom="8dp"
                     android:layout_toEndOf="@+id/cv_img"
-                    style="@style/TextColorOnTheme"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     tools:text="@string/github_name" />
@@ -181,20 +181,33 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
+            style="@style/TextColorOnTheme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            style="@style/TextColorOnTheme"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/guideline3"/>
-        
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guideline3" />
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/tabs"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tabs" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_fav"
+            style="@style/BackgroundAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:foregroundGravity="top"
+            app:fabSize="normal"
+            android:layout_marginTop="144dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tabs"
+            app:srcCompat="@drawable/ic_addfavorite" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

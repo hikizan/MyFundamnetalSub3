@@ -19,7 +19,7 @@ class FavoriteRepository(application: Application) {
 
     fun getAllFavorites(): LiveData<List<Favorite>> = mFavoriteDao.getAllFavorites()
 
-    fun insert(favorite: Favorite){
+    fun insert(favorite: Favorite?){
         executorService.execute { mFavoriteDao.insert(favorite) }
     }
 
