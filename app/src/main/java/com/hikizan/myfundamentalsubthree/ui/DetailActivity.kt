@@ -22,7 +22,7 @@ class DetailActivity : AppCompatActivity() {
     private val binding get() = _activityDetailBinding
     private var isFavorite = false
 
-    private var favorite: Favorite? = null
+    private var favorite: Favorite = Favorite()
     private lateinit var detailViewModel: DetailViewModel
 
     companion object {
