@@ -27,6 +27,7 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_DATA = "extra_data"
+        const val EXTRA_FAVORITE = "extra_favorite"
 
         @StringRes
         private val TAB_TITLES = intArrayOf(
