@@ -1,10 +1,12 @@
 package com.hikizan.myfundamentalsubthree.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hikizan.myfundamentalsubthree.adapter.FavoriteAdapter
+import com.hikizan.myfundamentalsubthree.database.Favorite
 import com.hikizan.myfundamentalsubthree.databinding.ActivityFavoriteBinding
 import com.hikizan.myfundamentalsubthree.ui.viewmodel.DetailViewModelFactory
 import com.hikizan.myfundamentalsubthree.ui.viewmodel.FavoriteViewModel
@@ -32,6 +34,14 @@ class FavoriteActivity : AppCompatActivity() {
         adapter = FavoriteAdapter()
         binding?.rvFavuser?.layoutManager = LinearLayoutManager(this@FavoriteActivity)
         binding?.rvFavuser?.setHasFixedSize(true)
+        /*
+        adapter.setOnItemClickCallback(object :
+        FavoriteAdapter.OnItemClickCallback {
+            override fun onItemClicked(favorite: Favorite) {
+                showSelectedFavoriteUser(favorite)
+            }
+        })
+         */
         binding?.rvFavuser?.adapter = adapter
 
     }
@@ -40,6 +50,14 @@ class FavoriteActivity : AppCompatActivity() {
         val factory = DetailViewModelFactory.getInstance(activity.application)
         return ViewModelProvider(activity, factory).get(FavoriteViewModel::class.java)
     }
+
+    /*
+    private fun showSelectedFavoriteUser(favorite: Favorite){
+        val moveWithParcel = Intent(this, DetailActivity::class.java)
+        moveWithParcel.putExtra(DetailActivity.EXTRA_FAVORITE, favorite)
+        startActivity(moveWithParcel)
+    }
+     */
 
     override fun onDestroy() {
         super.onDestroy()

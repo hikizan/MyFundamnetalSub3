@@ -14,6 +14,14 @@ import com.hikizan.myfundamentalsubthree.ui.DetailActivity
 class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
     private val listFavorite = ArrayList<Favorite>()
 
+    /*
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+     */
+
     fun setListFavorite(listFavorite: List<Favorite>){
         val diffCallback = FavoriteDiffCallback(this.listFavorite, listFavorite)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -21,6 +29,12 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
         this.listFavorite.addAll(listFavorite)
         diffResult.dispatchUpdatesTo(this)
     }
+
+    /*
+    interface OnItemClickCallback {
+        fun onItemClicked(favorite: Favorite)
+    }
+     */
 
     inner class ViewHolder(private val binding: ItemRowUserBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(favorite: Favorite){
@@ -33,11 +47,12 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
                     .circleCrop()
                     .into(imgItemPhoto)
 
-                cvItemUser.setOnClickListener {
+                itemView.setOnClickListener {
                     val intent = Intent(it.context, DetailActivity::class.java)
                     intent.putExtra(DetailActivity.EXTRA_FAVORITE, favorite)
                     it.context.startActivity(intent)
                 }
+
             }
         }
     }
@@ -49,6 +64,7 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: FavoriteAdapter.ViewHolder, position: Int) {
         holder.bind(listFavorite[position])
+        //holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listFavorite[holder.adapterPosition]) }
     }
 
     override fun getItemCount(): Int = listFavorite.size

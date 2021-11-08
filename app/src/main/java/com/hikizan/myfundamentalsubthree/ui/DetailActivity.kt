@@ -2,6 +2,7 @@ package com.hikizan.myfundamentalsubthree.ui
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -22,7 +23,7 @@ class DetailActivity : AppCompatActivity() {
     private val binding get() = _activityDetailBinding
     private var isFavorite = false
 
-    private var favorite: Favorite = Favorite()
+    private var favorite: Favorite? = null
     private lateinit var detailViewModel: DetailViewModel
 
     companion object {
@@ -50,23 +51,45 @@ class DetailActivity : AppCompatActivity() {
         }.attach()
 
         setFabFav(isFavorite)
-
+        //var favorite: Favorite? = null
+        favorite = intent.getParcelableExtra(EXTRA_FAVORITE)
+        Log.d("DetailActivity", "onCreate: favorite getParcelable : $favorite")
         val responseDetail: ResponseDetail? = intent.getParcelableExtra(EXTRA_DATA)
-        binding?.apply {
-            tvItemName.text = responseDetail?.name ?: "-"
-            tvItemLocation.text = responseDetail?.location ?: "="
-            tvItemCompany.text = responseDetail?.company ?: "-"
-            tvItemRepository.text = responseDetail?.publicRepos.toString()
-            tvItemFollowers.text = responseDetail?.followers.toString()
-            tvItemFollowing.text = responseDetail?.following.toString()
+        if (favorite != null){
+            isFavorite = true
+            setFabFav(isFavorite)
+            favorite?.let { favorite ->
+                supportActionBar?.title = favorite.login
+                binding?.tvItemName?.text = favorite.name
+                binding?.tvItemLocation?.text = favorite.location
+                binding?.tvItemCompany?.text = favorite.company
+                binding?.tvItemRepository?.text = favorite.publicRepos
+                binding?.tvItemFollowers?.text = favorite.followers
+                binding?.tvItemFollowing?.text = favorite.following
+
+                Glide.with(this)
+                    .load(favorite.avatarUrl)
+                    .into(binding!!.imgItemPhoto)
+            }
+        }else{
+
+            binding?.apply {
+                tvItemName.text = responseDetail?.name ?: "-"
+                tvItemLocation.text = responseDetail?.location ?: "="
+                tvItemCompany.text = responseDetail?.company ?: "-"
+                tvItemRepository.text = responseDetail?.publicRepos.toString()
+                tvItemFollowers.text = responseDetail?.followers.toString()
+                tvItemFollowing.text = responseDetail?.following.toString()
+            }
+
+            Glide.with(this)
+                .load(responseDetail?.avatarUrl)
+                .into(binding!!.imgItemPhoto)
+
+            supportActionBar?.title = responseDetail?.login
         }
 
-        Glide.with(this)
-            .load(responseDetail?.avatarUrl)
-            .into(binding!!.imgItemPhoto)
-
         supportActionBar?.elevation = 0f
-        supportActionBar?.title = responseDetail?.login
 
         numberFont()
 
@@ -75,6 +98,7 @@ class DetailActivity : AppCompatActivity() {
                 detailViewModel.delete(favorite as Favorite)
                 setFabFav(false)
             }else{
+                favorite = Favorite()
                 favorite?.let {
                     it.login = responseDetail?.login.toString()
                     it.name = responseDetail?.name.toString()
@@ -85,7 +109,7 @@ class DetailActivity : AppCompatActivity() {
                     it.followers = responseDetail?.followers.toString()
                     it.following = responseDetail?.following.toString()
                 }
-                detailViewModel.insert(favorite as? Favorite)
+                detailViewModel.insert(favorite as Favorite)
                 setFabFav(true)
             }
 
