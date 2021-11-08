@@ -27,9 +27,7 @@ class SettingActivity : AppCompatActivity() {
         setContentView(binding?.root)
 
         val pref = SettingPreferences.getInstance(dataStore)
-        val settingViewModel = ViewModelProvider(this, SettingViewModelFactory(pref)).get(
-            SettingViewModel::class.java
-        )
+        val settingViewModel = ViewModelProvider(this, SettingViewModelFactory(pref))[SettingViewModel::class.java]
         settingViewModel.getThemeSetting().observe(this,
             { isDarkModeActive ->
                 if (isDarkModeActive) {

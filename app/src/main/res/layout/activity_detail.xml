@@ -20,7 +20,8 @@
             android:background="@drawable/bottom_rounded"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/top_background" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_item_user"
@@ -52,7 +53,8 @@
                         android:id="@+id/img_item_photo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        tools:src="@tools:sample/avatars" />
+                        tools:src="@tools:sample/avatars"
+                        android:contentDescription="@string/photo_user" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -89,7 +91,8 @@
                     android:layout_below="@+id/cv_img"
                     android:layout_marginStart="11dp"
                     android:layout_marginBottom="6dp"
-                    android:src="@drawable/ic_location" />
+                    android:src="@drawable/ic_location"
+                    android:contentDescription="@string/icon_location" />
 
                 <TextView
                     android:id="@+id/tv_item_location"
@@ -207,7 +210,8 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tabs"
-            app:srcCompat="@drawable/ic_addfavorite" />
+            app:srcCompat="@drawable/ic_addfavorite"
+            android:contentDescription="@string/favorite_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

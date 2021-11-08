@@ -10,12 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hikizan.myfundamentalsubthree.R
 import com.hikizan.myfundamentalsubthree.adapter.GithubUserAdapter
@@ -24,10 +19,7 @@ import com.hikizan.myfundamentalsubthree.databinding.ActivityMainBinding
 import com.hikizan.myfundamentalsubthree.model.detail.ResponseDetail
 import com.hikizan.myfundamentalsubthree.model.search.ResponseSearch
 import com.hikizan.myfundamentalsubthree.model.users.ResponseUsers
-import com.hikizan.myfundamentalsubthree.preference.SettingPreferences
 import com.hikizan.myfundamentalsubthree.presenter.UsersPresenter
-import com.hikizan.myfundamentalsubthree.ui.viewmodel.SettingViewModel
-import com.hikizan.myfundamentalsubthree.ui.viewmodel.SettingViewModelFactory
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -35,7 +27,7 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity(), UsersContract.usersView {
 
     private lateinit var presenterUsers: UsersContract.usersPresenter
-    private val listDetail: ArrayList<ResponseDetail> = ArrayList<ResponseDetail>()
+    private val listDetail: ArrayList<ResponseDetail> = ArrayList()
     private var iSearch: SearchView? = null
     private lateinit var adapter: GithubUserAdapter
 
@@ -119,7 +111,7 @@ class MainActivity : AppCompatActivity(), UsersContract.usersView {
 
     override fun _onSuccess(usersResponse: List<ResponseUsers>?) {
         for (user in usersResponse!!) {
-            getReqDetail(user!!.login)
+            getReqDetail(user.login)
         }
         showLoading(false)
     }

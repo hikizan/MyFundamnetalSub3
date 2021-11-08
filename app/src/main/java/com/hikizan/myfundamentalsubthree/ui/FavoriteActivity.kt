@@ -34,30 +34,29 @@ class FavoriteActivity : AppCompatActivity() {
         adapter = FavoriteAdapter()
         binding?.rvFavuser?.layoutManager = LinearLayoutManager(this@FavoriteActivity)
         binding?.rvFavuser?.setHasFixedSize(true)
-        /*
+
+        binding?.rvFavuser?.adapter = adapter
+
         adapter.setOnItemClickCallback(object :
-        FavoriteAdapter.OnItemClickCallback {
+            FavoriteAdapter.OnItemClickCallback {
             override fun onItemClicked(favorite: Favorite) {
                 showSelectedFavoriteUser(favorite)
             }
         })
-         */
-        binding?.rvFavuser?.adapter = adapter
+
 
     }
 
     private fun obtainViewModel(activity: AppCompatActivity): FavoriteViewModel {
         val factory = DetailViewModelFactory.getInstance(activity.application)
-        return ViewModelProvider(activity, factory).get(FavoriteViewModel::class.java)
+        return ViewModelProvider(activity, factory)[FavoriteViewModel::class.java]
     }
 
-    /*
-    private fun showSelectedFavoriteUser(favorite: Favorite){
-        val moveWithParcel = Intent(this, DetailActivity::class.java)
+    private fun showSelectedFavoriteUser(favorite: Favorite) {
+        val moveWithParcel = Intent(this@FavoriteActivity, DetailActivity::class.java)
         moveWithParcel.putExtra(DetailActivity.EXTRA_FAVORITE, favorite)
         startActivity(moveWithParcel)
     }
-     */
 
     override fun onDestroy() {
         super.onDestroy()

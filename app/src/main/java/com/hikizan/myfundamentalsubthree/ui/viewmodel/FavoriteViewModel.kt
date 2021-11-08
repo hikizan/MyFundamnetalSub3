@@ -9,5 +9,5 @@ import com.hikizan.myfundamentalsubthree.repository.FavoriteRepository
 class FavoriteViewModel(application: Application) : ViewModel() {
     private val mFavoriteRepository: FavoriteRepository = FavoriteRepository(application)
 
-    fun getAllFavorites() : LiveData<List<Favorite>> = mFavoriteRepository.getAllFavorites()
+    fun getAllFavorites(): LiveData<List<Favorite>> = mFavoriteRepository.getAllFavorites()
 }

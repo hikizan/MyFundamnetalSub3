@@ -7,14 +7,14 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.hikizan.myfundamentalsubthree.ui.FollowersFragment
 import com.hikizan.myfundamentalsubthree.ui.FollowingFragment
 
-class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity){
+class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int {
         return 2
     }
 
     override fun createFragment(position: Int): Fragment {
         var fragment: Fragment? = null
-        when(position){
+        when (position) {
             0 -> fragment = FollowersFragment()
             1 -> fragment = FollowingFragment()
         }

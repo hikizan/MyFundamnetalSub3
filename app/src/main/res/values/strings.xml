@@ -16,4 +16,9 @@
     <string name="dark_mode">Dark Mode</string>
     <string name="favorite">Favorite</string>
     <string name="setting">Setting</string>
+    <string name="top_background">Top Background</string>
+    <string name="photo_user">Photo User</string>
+    <string name="icon_location">Icon Location</string>
+    <string name="favorite_button">Favorite Button</string>
+    <string name="logo_app">Logo App</string>
 </resources>

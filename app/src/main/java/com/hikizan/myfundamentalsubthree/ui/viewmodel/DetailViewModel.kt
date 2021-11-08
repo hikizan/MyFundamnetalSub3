@@ -8,11 +8,11 @@ import com.hikizan.myfundamentalsubthree.repository.FavoriteRepository
 class DetailViewModel(application: Application) : ViewModel() {
     private val mFavoriteRepository: FavoriteRepository = FavoriteRepository(application)
 
-    fun insert(favorite: Favorite?){
+    fun insert(favorite: Favorite?) {
         mFavoriteRepository.insert(favorite)
     }
 
-    fun delete(favorite: Favorite){
+    fun delete(favorite: Favorite) {
         mFavoriteRepository.delete(favorite)
     }
 }

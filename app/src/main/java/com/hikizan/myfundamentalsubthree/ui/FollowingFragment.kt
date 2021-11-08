@@ -1,5 +1,6 @@
 package com.hikizan.myfundamentalsubthree.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hikizan.myfundamentalsubthree.adapter.GithubUserAdapter
 import com.hikizan.myfundamentalsubthree.contract.UsersContract
+import com.hikizan.myfundamentalsubthree.database.Favorite
 import com.hikizan.myfundamentalsubthree.databinding.FragmentFollowingBinding
 import com.hikizan.myfundamentalsubthree.model.detail.ResponseDetail
 import com.hikizan.myfundamentalsubthree.model.following.ResponseFollowing
@@ -18,27 +20,36 @@ import com.hikizan.myfundamentalsubthree.presenter.FollowingPresenter
 class FollowingFragment : Fragment(), UsersContract.followingView {
 
     private lateinit var presenterFollowing: UsersContract.followingPresenter
-    private lateinit var binding: FragmentFollowingBinding
-    private val listDetail: ArrayList<ResponseDetail> = ArrayList<ResponseDetail>()
+    private var _fragmentFollowingBinding: FragmentFollowingBinding? = null
+    private val binding get() = _fragmentFollowingBinding
+    private val listDetail: ArrayList<ResponseDetail> = ArrayList()
     private lateinit var adapter: GithubUserAdapter
+    private var responseDetail: ResponseDetail? = null
+    private var favorite: Favorite? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        binding = FragmentFollowingBinding.inflate(inflater, container, false)
-        return binding.root
+        _fragmentFollowingBinding = FragmentFollowingBinding.inflate(inflater, container, false)
+        return binding?.root!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initPresenter()
 
-        val responseDetail: ResponseDetail? =
+        responseDetail =
             requireActivity().intent.getParcelableExtra(DetailActivity.EXTRA_DATA)
 
-        presenterFollowing.getFollowing(responseDetail?.login)
+        favorite = requireActivity().intent.getParcelableExtra(DetailActivity.EXTRA_FAVORITE)
+
+        if (responseDetail != null) {
+            presenterFollowing.getFollowing(responseDetail?.login)
+        } else {
+            presenterFollowing.getFollowing(favorite?.login)
+        }
     }
 
     private fun initPresenter() {
@@ -52,17 +63,18 @@ class FollowingFragment : Fragment(), UsersContract.followingView {
 
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
-            binding.pbFollowing.visibility = View.VISIBLE
+            binding?.pbFollowing?.visibility = View.VISIBLE
         } else {
-            binding.pbFollowing.visibility = View.INVISIBLE
+            binding?.pbFollowing?.visibility = View.INVISIBLE
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun _onSuccessDetail(detailResponse: ResponseDetail?) {
         listDetail.add(detailResponse!!)
         adapter = GithubUserAdapter(listDetail)
-        binding.rvFollowing.layoutManager = LinearLayoutManager(requireContext())
-        binding.rvFollowing.adapter = adapter
+        binding?.rvFollowing?.layoutManager = LinearLayoutManager(requireContext())
+        binding?.rvFollowing?.adapter = adapter
         adapter.notifyDataSetChanged()
         adapter.setOnItemClickCallback(object : GithubUserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: ResponseDetail) {
@@ -93,4 +105,8 @@ class FollowingFragment : Fragment(), UsersContract.followingView {
         Toast.makeText(requireContext(), "Message: $message", Toast.LENGTH_SHORT).show()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _fragmentFollowingBinding = null
+    }
 }

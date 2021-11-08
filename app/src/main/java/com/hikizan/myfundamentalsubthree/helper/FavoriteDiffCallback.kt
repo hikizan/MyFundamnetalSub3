@@ -3,7 +3,10 @@ package com.hikizan.myfundamentalsubthree.helper
 import androidx.recyclerview.widget.DiffUtil
 import com.hikizan.myfundamentalsubthree.database.Favorite
 
-class FavoriteDiffCallback(private val mOldFavoriteList: List<Favorite>, private val mNewFavoriteList: List<Favorite>) : DiffUtil.Callback(){
+class FavoriteDiffCallback(
+    private val mOldFavoriteList: List<Favorite>,
+    private val mNewFavoriteList: List<Favorite>
+) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return mOldFavoriteList.size
     }
