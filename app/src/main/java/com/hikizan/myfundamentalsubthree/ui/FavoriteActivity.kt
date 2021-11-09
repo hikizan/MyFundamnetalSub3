@@ -3,6 +3,7 @@ package com.hikizan.myfundamentalsubthree.ui
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hikizan.myfundamentalsubthree.adapter.FavoriteAdapter
@@ -27,6 +28,7 @@ class FavoriteActivity : AppCompatActivity() {
         val favoriteViewModel = obtainViewModel(this@FavoriteActivity)
         favoriteViewModel.getAllFavorites().observe(this, { favoriteList ->
             if (favoriteList != null) {
+                Log.d("FavoriteActivity", "onCreate: list Favorite : $favoriteList")
                 adapter.setListFavorite(favoriteList)
             }
         })

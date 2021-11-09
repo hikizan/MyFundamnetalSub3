@@ -133,6 +133,18 @@ class DetailActivity : AppCompatActivity() {
         } else {
             Log.d("DetailActivity", "onCreate: on ELSE IF(favorite == null) statement")
             responseDetail = intent.getParcelableExtra(EXTRA_DATA)
+
+            /*
+            val tes = detailViewModel.getFavoritedUser(responseDetail?.login!!)
+            Log.d("DetailActivity", "checkToSetDataDetail: kalo gada di list favorite harusnya null : $tes")
+             */
+
+            detailViewModel.data(responseDetail?.login.toString())
+            detailViewModel.isFavorited.observe(this, {
+                isFavorite = it
+                setFabFav(it)
+            })
+
             binding?.apply {
                 tvItemName.text = responseDetail?.name ?: "-"
                 tvItemLocation.text = responseDetail?.location ?: "="
