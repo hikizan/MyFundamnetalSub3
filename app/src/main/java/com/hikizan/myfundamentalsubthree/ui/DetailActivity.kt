@@ -43,7 +43,7 @@ class DetailActivity : AppCompatActivity() {
 
         favorite = intent.getParcelableExtra(EXTRA_FAVORITE)
         Log.d("DetailActivity", "onCreate: favorite getParcelable : $favorite")
-
+        //responseDetail = intent.getParcelableExtra(EXTRA_DATA)
 
         checkToSetDataDetail(favorite)
 
@@ -52,10 +52,22 @@ class DetailActivity : AppCompatActivity() {
         numberFont()
 
         binding?.fabFav?.setOnClickListener {
-            if (isFavorite) {
+            if (isFavorite){
                 detailViewModel.delete(favorite as Favorite)
                 setFabFav(false)
-            } else {
+            }
+            /*
+            else if (isFavorite && responseDetail != null) {
+                //detailViewModel.deleteWithUsername(getUsername)
+
+                detailViewModel.getFavoriteUser(responseDetail?.login).observe(this,{
+                  favUser = it
+                })
+                detailViewModel.delete(favUser)
+                setFabFav(false)
+            }
+             */
+            else {
                 favorite = Favorite()
                 favorite?.let {
                     it.login = responseDetail?.login.toString()
@@ -95,12 +107,6 @@ class DetailActivity : AppCompatActivity() {
         return ViewModelProvider(activity, factory)[DetailViewModel::class.java]
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _activityDetailBinding = null
-        favorite = null
-        responseDetail = null
-    }
 
     private fun setFabFav(fav: Boolean) {
         val fabIsFav = ContextCompat.getDrawable(this, R.drawable.ic_addfavorite)
@@ -117,7 +123,7 @@ class DetailActivity : AppCompatActivity() {
         if (favorite != null) {
             Log.d("DetailActivity", "onCreate: on IF(favorite != null) statement")
             isFavorite = true
-            setFabFav(isFavorite)
+            setFabFav(true)
             supportActionBar?.title = favorite.login
             binding?.tvItemName?.text = favorite.name ?: "-"
             binding?.tvItemLocation?.text = favorite.location ?: "-"
@@ -133,6 +139,16 @@ class DetailActivity : AppCompatActivity() {
         } else {
             Log.d("DetailActivity", "onCreate: on ELSE IF(favorite == null) statement")
             responseDetail = intent.getParcelableExtra(EXTRA_DATA)
+
+            if (detailViewModel.detailUserFavorited(responseDetail?.login) != null){
+                Log.d("DetailActivity", "checkToSetDataDetail: jika ini jalan maka user berada di favorite")
+                isFavorite = true
+                setFabFav(true)
+            }else{
+                Log.d("DetailActivity", "checkToSetDataDetail: jika ini jalan maka user tidak ada di favorite")
+                isFavorite = false
+                setFabFav(false)
+            }
             binding?.apply {
                 tvItemName.text = responseDetail?.name ?: "-"
                 tvItemLocation.text = responseDetail?.location ?: "="
@@ -147,8 +163,15 @@ class DetailActivity : AppCompatActivity() {
                 .into(binding!!.imgItemPhoto)
 
             supportActionBar?.title = responseDetail?.login
-            setFabFav(isFavorite)
+
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _activityDetailBinding = null
+        favorite = null
+        responseDetail = null
     }
 
     companion object {
