@@ -53,12 +53,21 @@ class DetailActivity : AppCompatActivity() {
         numberFont()
         //var favorite2: Favorite? = favorite
         binding?.fabFav?.setOnClickListener {
-
+            Log.d("DetailActivity", "onCreate: favorite = $favorite")
             if (isFavorite) {
                 if (favorite != null){
                     //favorite2 = favorite
-                    detailViewModel.delete(favorite as Favorite)
+                    Log.d("DetailActivity", "onCreate: Delete From if (favorite != null)")
+                    //detailViewModel.delete(favorite as Favorite)
+                    detailViewModel.findSpecificUser(favorite?.login).observe(this,{
+                        if (it != null){
+                            Log.d("DetailActivity_OnClick", "onCreate: it = $it")
+                            detailViewModel.delete(it)
+                        }
+                    })
+                    Log.d("DetailActivity", "onCreate: now favorite = $favorite")
                 } else {
+                    Log.d("DetailActivity", "onCreate: Delete From else )")
                     Log.d("DetailActivity_OnClick", "onCreate: masuk di else")
                     detailViewModel.findSpecificUser(responseDetail?.login).observe(this,{
                         if (it != null){
@@ -152,7 +161,6 @@ class DetailActivity : AppCompatActivity() {
                 .into(binding!!.imgItemPhoto)
 
         } else {
-            Log.d("DetailActivity", "onCreate: on ELSE IF(favorite == null) statement")
 
             /*
             val tes = detailViewModel.data(responseDetail?.login!!)
@@ -164,6 +172,7 @@ class DetailActivity : AppCompatActivity() {
             detailViewModel.isFavorited.observe(this, {
                 isFavorite = it
                 setFabFav(isFavorite)
+                Log.d("DetailActivity", "onCreate: it = $it")
             })
 
             binding?.apply {
