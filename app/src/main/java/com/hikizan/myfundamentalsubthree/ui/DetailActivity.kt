@@ -73,7 +73,7 @@ class DetailActivity : AppCompatActivity() {
                     })
                     detailViewModel.delete(specificFavorite as Favorite)
                 }
-
+                isFavorite = false
                 setFabFav(false)
             } else {
                 favorite = Favorite()
@@ -88,6 +88,7 @@ class DetailActivity : AppCompatActivity() {
                     it.following = responseDetail?.following.toString()
                 }
                 detailViewModel.insert(favorite as Favorite)
+                isFavorite = true
                 setFabFav(true)
             }
 
