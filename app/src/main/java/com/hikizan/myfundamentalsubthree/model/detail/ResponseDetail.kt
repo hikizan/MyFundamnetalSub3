@@ -15,8 +15,6 @@ data class ResponseDetail(
     val followers: Int?,
     @SerializedName("following")
     val following: Int?,
-    //@SerializedName("id")
-    //val id: Int?,
     @SerializedName("location")
     val location: String?,
     @SerializedName("login")

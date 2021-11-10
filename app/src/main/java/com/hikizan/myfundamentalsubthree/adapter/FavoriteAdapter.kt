@@ -45,15 +45,6 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
                     .load(favorite.avatarUrl)
                     .circleCrop()
                     .into(imgItemPhoto)
-
-                /*
-                itemView.setOnClickListener {
-                    val intent = Intent(it.context, DetailActivity::class.java)
-                    intent.putExtra(DetailActivity.EXTRA_FAVORITE, favorite)
-                    it.context.startActivity(intent)
-                }
-                 */
-
             }
         }
     }

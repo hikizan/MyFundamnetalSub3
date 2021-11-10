@@ -51,39 +51,31 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.elevation = 0f
 
         numberFont()
-        //var favorite2: Favorite? = favorite
-        binding?.fabFav?.setOnClickListener {
-            Log.d("DetailActivity", "onCreate: favorite = $favorite")
-            if (isFavorite) {
-                if (favorite != null){
-                    //favorite2 = favorite
-                    Log.d("DetailActivity", "onCreate: Delete From if (favorite != null)")
-                    //detailViewModel.delete(favorite as Favorite)
-                    detailViewModel.findSpecificUser(favorite?.login).observe(this,{
-                        if (it != null){
-                            Log.d("DetailActivity_OnClick", "onCreate: it = $it")
-                            detailViewModel.delete(it)
-                        }
-                    })
-                    Log.d("DetailActivity", "onCreate: now favorite = $favorite")
-                } else {
-                    Log.d("DetailActivity", "onCreate: Delete From else )")
-                    Log.d("DetailActivity_OnClick", "onCreate: masuk di else")
-                    detailViewModel.findSpecificUser(responseDetail?.login).observe(this,{
-                        if (it != null){
-                            Log.d("DetailActivity_OnClick", "onCreate: it = $it")
-                            detailViewModel.delete(it)
-                        }
-                    })
 
+        binding?.fabFav?.setOnClickListener {
+            if (isFavorite) {
+
+                if (favorite != null) {
+                    detailViewModel.findSpecificUser(favorite?.login).observe(this, {
+                        if (it != null) {
+                            detailViewModel.delete(it)
+                        }
+                    })
+                } else {
+                    detailViewModel.findSpecificUser(responseDetail?.login).observe(this, {
+                        if (it != null) {
+                            detailViewModel.delete(it)
+                        }
+                    })
                 }
                 isFavorite = false
                 setFabFav(false)
+
             } else {
-                if (favorite != null){
-                    //favorite2 = favorite
+
+                if (favorite != null) {
                     detailViewModel.insert(favorite as Favorite)
-                }else{
+                } else {
                     favorite = Favorite()
                     favorite?.let {
                         it.login = responseDetail?.login.toString()
@@ -95,7 +87,6 @@ class DetailActivity : AppCompatActivity() {
                         it.followers = responseDetail?.followers.toString()
                         it.following = responseDetail?.following.toString()
                     }
-                    //favorite2 = favorite
                     detailViewModel.insert(favorite as Favorite)
                 }
                 isFavorite = true
@@ -161,13 +152,6 @@ class DetailActivity : AppCompatActivity() {
                 .into(binding!!.imgItemPhoto)
 
         } else {
-
-            /*
-            val tes = detailViewModel.data(responseDetail?.login!!)
-            Log.d("DetailActivity", "checkToSetDataDetail: kalo gada di list favorite harusnya null : $tes")
-             */
-
-
             detailViewModel.data(responseDetail?.login.toString())
             detailViewModel.isFavorited.observe(this, {
                 isFavorite = it
@@ -189,8 +173,6 @@ class DetailActivity : AppCompatActivity() {
                 .into(binding!!.imgItemPhoto)
 
             supportActionBar?.title = responseDetail?.login
-
-            //setFabFav(isFavorite)
         }
     }
 

@@ -29,13 +29,12 @@ class FavoriteRepository(application: Application) {
         executorService.execute { mFavoriteDao.delete(favorite) }
     }
 
-
     fun getFavoritedUser(username: String) {
         executorService.execute {
             val favorite = mFavoriteDao.getFavoritedUser(username)
-            if (favorite != null){
+            if (favorite != null) {
                 favorited.postValue(true)
-            }else{
+            } else {
                 favorited.postValue(false)
             }
         }
