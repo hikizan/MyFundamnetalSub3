@@ -22,4 +22,5 @@ class DetailViewModel(application: Application) : ViewModel() {
     fun data(username: String): Unit = mFavoriteRepository.getFavoritedUser(username)
 
     val isFavorited: LiveData<Boolean> = mFavoriteRepository.isFavorited
+
 }

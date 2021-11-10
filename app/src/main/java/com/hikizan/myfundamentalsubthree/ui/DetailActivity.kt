@@ -57,9 +57,12 @@ class DetailActivity : AppCompatActivity() {
                 if (favorite != null){
                     detailViewModel.delete(favorite as Favorite)
                 } else {
-                    val specificFavorite = Favorite()
-
+                    //val specificFavorite: Favorite = detailViewModel.userFavorited
                     detailViewModel.findSpecificUser(responseDetail?.login).observe(this,{
+                        if (it != null){
+                            detailViewModel.delete(it)
+                        }
+                    /*
                         specificFavorite.let { specificFavorite ->
                             specificFavorite.login = it.login
                             specificFavorite.name = it.name
@@ -70,8 +73,9 @@ class DetailActivity : AppCompatActivity() {
                             specificFavorite.following = it.following
                             specificFavorite.followers = it.followers
                         }
+                         */
                     })
-                    detailViewModel.delete(specificFavorite as Favorite)
+
                 }
                 isFavorite = false
                 setFabFav(false)
