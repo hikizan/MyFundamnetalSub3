@@ -60,6 +60,7 @@ class DetailActivity : AppCompatActivity() {
                 } else {
                     detailViewModel.findSpecificUser(responseDetail?.login).observe(this,{
                         if (it != null){
+                            Log.d("DetailActivity_OnClick", "onCreate: it = $it")
                             detailViewModel.delete(it)
                         }
                     })
