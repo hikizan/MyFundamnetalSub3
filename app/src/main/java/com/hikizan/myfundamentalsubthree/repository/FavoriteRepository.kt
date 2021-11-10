@@ -29,6 +29,7 @@ class FavoriteRepository(application: Application) {
         executorService.execute { mFavoriteDao.delete(favorite) }
     }
 
+
     fun getFavoritedUser(username: String) {
         executorService.execute {
             val favorite = mFavoriteDao.getFavoritedUser(username)
@@ -39,6 +40,9 @@ class FavoriteRepository(application: Application) {
             }
         }
     }
+
+
+    fun findSpecificUser(login: String?): LiveData<Favorite> = mFavoriteDao.findSpecificUser(login)
 
     val isFavorited: LiveData<Boolean> = favorited
 }

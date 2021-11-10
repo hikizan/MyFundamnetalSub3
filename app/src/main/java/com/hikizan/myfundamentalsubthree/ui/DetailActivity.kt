@@ -44,6 +44,7 @@ class DetailActivity : AppCompatActivity() {
         favorite = intent.getParcelableExtra(EXTRA_FAVORITE)
         Log.d("DetailActivity", "onCreate: favorite getParcelable : $favorite")
 
+        responseDetail = intent.getParcelableExtra(EXTRA_DATA)
 
         checkToSetDataDetail(favorite)
 
@@ -53,7 +54,26 @@ class DetailActivity : AppCompatActivity() {
 
         binding?.fabFav?.setOnClickListener {
             if (isFavorite) {
-                detailViewModel.delete(favorite as Favorite)
+                if (favorite != null){
+                    detailViewModel.delete(favorite as Favorite)
+                } else {
+                    val specificFavorite = Favorite()
+
+                    detailViewModel.findSpecificUser(responseDetail?.login).observe(this,{
+                        specificFavorite.let { specificFavorite ->
+                            specificFavorite.login = it.login
+                            specificFavorite.name = it.name
+                            specificFavorite.avatarUrl = it.avatarUrl
+                            specificFavorite.location = it.location
+                            specificFavorite.company = it.company
+                            specificFavorite.publicRepos = it.publicRepos
+                            specificFavorite.following = it.following
+                            specificFavorite.followers = it.followers
+                        }
+                    })
+                    detailViewModel.delete(specificFavorite as Favorite)
+                }
+
                 setFabFav(false)
             } else {
                 favorite = Favorite()
@@ -132,12 +152,11 @@ class DetailActivity : AppCompatActivity() {
 
         } else {
             Log.d("DetailActivity", "onCreate: on ELSE IF(favorite == null) statement")
-            responseDetail = intent.getParcelableExtra(EXTRA_DATA)
 
-            /*
-            val tes = detailViewModel.getFavoritedUser(responseDetail?.login!!)
+
+            val tes = detailViewModel.data(responseDetail?.login!!)
             Log.d("DetailActivity", "checkToSetDataDetail: kalo gada di list favorite harusnya null : $tes")
-             */
+
 
             detailViewModel.data(responseDetail?.login.toString())
             detailViewModel.isFavorited.observe(this, {
