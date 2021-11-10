@@ -55,43 +55,36 @@ class DetailActivity : AppCompatActivity() {
         binding?.fabFav?.setOnClickListener {
             if (isFavorite) {
                 if (favorite != null){
-                    detailViewModel.delete(favorite as Favorite)
+                    val favorite2: Favorite? = favorite
+                    detailViewModel.delete(favorite2 as Favorite)
                 } else {
-                    //val specificFavorite: Favorite = detailViewModel.userFavorited
                     detailViewModel.findSpecificUser(responseDetail?.login).observe(this,{
                         if (it != null){
                             detailViewModel.delete(it)
                         }
-                    /*
-                        specificFavorite.let { specificFavorite ->
-                            specificFavorite.login = it.login
-                            specificFavorite.name = it.name
-                            specificFavorite.avatarUrl = it.avatarUrl
-                            specificFavorite.location = it.location
-                            specificFavorite.company = it.company
-                            specificFavorite.publicRepos = it.publicRepos
-                            specificFavorite.following = it.following
-                            specificFavorite.followers = it.followers
-                        }
-                         */
                     })
 
                 }
                 isFavorite = false
                 setFabFav(false)
             } else {
-                favorite = Favorite()
-                favorite?.let {
-                    it.login = responseDetail?.login.toString()
-                    it.name = responseDetail?.name.toString()
-                    it.avatarUrl = responseDetail?.avatarUrl.toString()
-                    it.location = responseDetail?.location.toString()
-                    it.company = responseDetail?.company.toString()
-                    it.publicRepos = responseDetail?.publicRepos.toString()
-                    it.followers = responseDetail?.followers.toString()
-                    it.following = responseDetail?.following.toString()
+                if (favorite != null){
+                    detailViewModel.insert(favorite as Favorite)
+                }else{
+                    favorite = Favorite()
+                    favorite?.let {
+                        it.login = responseDetail?.login.toString()
+                        it.name = responseDetail?.name.toString()
+                        it.avatarUrl = responseDetail?.avatarUrl.toString()
+                        it.location = responseDetail?.location.toString()
+                        it.company = responseDetail?.company.toString()
+                        it.publicRepos = responseDetail?.publicRepos.toString()
+                        it.followers = responseDetail?.followers.toString()
+                        it.following = responseDetail?.following.toString()
+                    }
+                    detailViewModel.insert(favorite as Favorite)
                 }
-                detailViewModel.insert(favorite as Favorite)
+
                 isFavorite = true
                 setFabFav(true)
             }
@@ -183,7 +176,8 @@ class DetailActivity : AppCompatActivity() {
                 .into(binding!!.imgItemPhoto)
 
             supportActionBar?.title = responseDetail?.login
-            setFabFav(isFavorite)
+
+            //setFabFav(isFavorite)
         }
     }
 
