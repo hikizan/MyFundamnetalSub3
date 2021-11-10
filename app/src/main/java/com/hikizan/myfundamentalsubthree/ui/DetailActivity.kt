@@ -51,13 +51,15 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.elevation = 0f
 
         numberFont()
-
+        //var favorite2: Favorite? = favorite
         binding?.fabFav?.setOnClickListener {
+
             if (isFavorite) {
                 if (favorite != null){
-                    val favorite2: Favorite? = favorite
-                    detailViewModel.delete(favorite2 as Favorite)
+                    //favorite2 = favorite
+                    detailViewModel.delete(favorite as Favorite)
                 } else {
+                    Log.d("DetailActivity_OnClick", "onCreate: masuk di else")
                     detailViewModel.findSpecificUser(responseDetail?.login).observe(this,{
                         if (it != null){
                             Log.d("DetailActivity_OnClick", "onCreate: it = $it")
@@ -70,6 +72,7 @@ class DetailActivity : AppCompatActivity() {
                 setFabFav(false)
             } else {
                 if (favorite != null){
+                    //favorite2 = favorite
                     detailViewModel.insert(favorite as Favorite)
                 }else{
                     favorite = Favorite()
@@ -83,13 +86,12 @@ class DetailActivity : AppCompatActivity() {
                         it.followers = responseDetail?.followers.toString()
                         it.following = responseDetail?.following.toString()
                     }
+                    //favorite2 = favorite
                     detailViewModel.insert(favorite as Favorite)
                 }
-
                 isFavorite = true
                 setFabFav(true)
             }
-
         }
     }
 
@@ -152,15 +154,16 @@ class DetailActivity : AppCompatActivity() {
         } else {
             Log.d("DetailActivity", "onCreate: on ELSE IF(favorite == null) statement")
 
-
+            /*
             val tes = detailViewModel.data(responseDetail?.login!!)
             Log.d("DetailActivity", "checkToSetDataDetail: kalo gada di list favorite harusnya null : $tes")
+             */
 
 
             detailViewModel.data(responseDetail?.login.toString())
             detailViewModel.isFavorited.observe(this, {
                 isFavorite = it
-                setFabFav(it)
+                setFabFav(isFavorite)
             })
 
             binding?.apply {
