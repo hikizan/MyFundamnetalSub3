@@ -23,8 +23,10 @@ class DetailActivity : AppCompatActivity() {
     private val binding get() = _activityDetailBinding
     private var isFavorite = false
 
-    private var favorite: Favorite? = null
+    private var fromFavorite: Favorite? = null
     private var responseDetail: ResponseDetail? = null
+    private var tempFavorite: Favorite? = null
+    private var fromRes: Favorite? = null
     private lateinit var detailViewModel: DetailViewModel
 
 
@@ -41,12 +43,12 @@ class DetailActivity : AppCompatActivity() {
             tab.text = resources.getString(TAB_TITLES[posistion])
         }.attach()
 
-        favorite = intent.getParcelableExtra(EXTRA_FAVORITE)
-        Log.d("DetailActivity", "onCreate: favorite getParcelable : $favorite")
-
+        fromFavorite = intent.getParcelableExtra(EXTRA_FAVORITE)
         responseDetail = intent.getParcelableExtra(EXTRA_DATA)
 
-        checkToSetDataDetail(favorite)
+        setDataOnDetail(fromFavorite, responseDetail)
+
+        checkFavorite(fromFavorite, responseDetail)
 
         supportActionBar?.elevation = 0f
 
@@ -55,43 +57,24 @@ class DetailActivity : AppCompatActivity() {
         binding?.fabFav?.setOnClickListener {
             if (isFavorite) {
 
-                if (favorite != null) {
-                    detailViewModel.findSpecificUser(favorite?.login).observe(this, {
-                        if (it != null) {
-                            detailViewModel.delete(it)
-                        }
+                if (fromRes != null){
+                    detailViewModel.findSpecificUser(tempFavorite?.login)?.observe(this, {findUser ->
+                        Log.d("DetailActivity_checkDel", "checkBeforeDelete: findUser = $findUser")
+                        tempFavorite = findUser as Favorite
+                        detailViewModel.delete(tempFavorite as Favorite)
                     })
-                } else {
-                    detailViewModel.findSpecificUser(responseDetail?.login).observe(this, {
-                        if (it != null) {
-                            detailViewModel.delete(it)
-                        }
-                    })
+                }else{
+                    Log.d("DetailActivity_DELETE", "onCreate: tempFavorite = $tempFavorite")
+                    detailViewModel.delete(tempFavorite as Favorite)
                 }
 
-                isFavorite = false
-                setFabFav(false)
+                //tempFavorite = null
+
 
             } else {
+                Log.d("DetailActivity_INSERT", "onCreate: tempFavorite = $tempFavorite")
+                detailViewModel.insert(tempFavorite)
 
-                if (favorite != null) {
-                    detailViewModel.insert(favorite as Favorite)
-                } else {
-                    favorite = Favorite()
-                    favorite?.let {
-                        it.login = responseDetail?.login.toString()
-                        it.name = responseDetail?.name.toString()
-                        it.avatarUrl = responseDetail?.avatarUrl.toString()
-                        it.location = responseDetail?.location.toString()
-                        it.company = responseDetail?.company.toString()
-                        it.publicRepos = responseDetail?.publicRepos.toString()
-                        it.followers = responseDetail?.followers.toString()
-                        it.following = responseDetail?.following.toString()
-                    }
-                    detailViewModel.insert(favorite as Favorite)
-                }
-                isFavorite = true
-                setFabFav(true)
             }
         }
     }
@@ -120,8 +103,110 @@ class DetailActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _activityDetailBinding = null
-        favorite = null
+        fromFavorite = null
         responseDetail = null
+    }
+
+    private fun setDataOnDetail(fromFavorite: Favorite?, responseDetail: ResponseDetail?){
+        if (responseDetail != null){
+            binding?.apply {
+                tvItemName.text = responseDetail.name ?: "-"
+                tvItemLocation.text = responseDetail.location ?: "-"
+                tvItemCompany.text = responseDetail.company ?: "-"
+                tvItemRepository.text = responseDetail.publicRepos.toString()
+                tvItemFollowers.text = responseDetail.followers.toString()
+                tvItemFollowing.text = responseDetail.following.toString()
+            }
+
+            Glide.with(this)
+                .load(responseDetail.avatarUrl)
+                .into(binding!!.imgItemPhoto)
+
+            supportActionBar?.title = responseDetail.login
+        }else{
+            binding?.apply {
+                tvItemName.text = fromFavorite?.name ?: "-"
+                tvItemLocation.text = fromFavorite?.location ?: "-"
+                tvItemCompany.text = fromFavorite?.company ?: "-"
+                tvItemRepository.text = fromFavorite?.publicRepos.toString()
+                tvItemFollowers.text = fromFavorite?.followers.toString()
+                tvItemFollowing.text = fromFavorite?.following.toString()
+            }
+
+            Glide.with(this)
+                .load(fromFavorite?.avatarUrl)
+                .into(binding!!.imgItemPhoto)
+        }
+    }
+
+    private fun checkFavorite(fromFavorite: Favorite?, responseDetail: ResponseDetail?){
+
+        when{
+
+            responseDetail != null -> {
+                fromRes = Favorite()
+
+                fromRes?.let {
+                    it.login = responseDetail.login.toString()
+                    it.name = responseDetail.name.toString()
+                    it.avatarUrl = responseDetail.avatarUrl.toString()
+                    it.location = responseDetail.location.toString()
+                    it.company = responseDetail.company.toString()
+                    it.publicRepos = responseDetail.publicRepos.toString()
+                    it.followers = responseDetail.followers.toString()
+                    it.following = responseDetail.following.toString()
+                }
+
+                when {
+                    fromRes?.name == null -> {
+                        fromRes?.name = "-"
+                    }
+                    fromRes?.location == null -> {
+                        fromRes?.location = "-"
+                    }
+                    fromRes?.company == null -> {
+                        fromRes?.company = "-"
+                    }
+                }
+            }
+
+            fromFavorite != null -> tempFavorite = fromFavorite
+        }
+
+        if (fromRes != null){
+            tempFavorite = fromRes
+        }
+
+        detailViewModel.findSpecificUser(tempFavorite?.login)?.observe(this, {findUser ->
+            Log.d("DetailActivity_checkFav", "checkFavorite: findUser = $findUser")
+            if (findUser == null){
+                isFavorite = false
+                setFabFav(isFavorite)
+            }else{
+                isFavorite = true
+                setFabFav(isFavorite)
+            }
+            Log.d("DetailActivity_checkFav", "checkFavorite: isFavorite = $isFavorite")
+        })
+
+
+        /*
+        val favorited = detailViewModel.findSpecificUser(tempFavorite?.login)
+        Log.d("DetailActivity", "checkFavorite: favorited = $favorited")
+        if (favorited != null){
+            isFavorite = true
+            setFabFav(isFavorite)
+        }else{
+            isFavorite = false
+            setFabFav(isFavorite)
+        }
+
+        detailViewModel.data(tempFavorite?.login.toString())
+        isFavorite = detailViewModel.isFavorited
+        Log.d("DetailActivity_checkFav", "checkFavorite: first isFavorite = $isFavorite")
+        setFabFav(isFavorite)
+         */
+
     }
 
     private fun setFabFav(fav: Boolean) {
@@ -132,48 +217,6 @@ class DetailActivity : AppCompatActivity() {
             binding?.fabFav?.setImageDrawable(fabIsFav)
         } else {
             binding?.fabFav?.setImageDrawable(fabNoFav)
-        }
-    }
-
-    private fun checkToSetDataDetail(favorite: Favorite?) {
-        if (favorite != null) {
-            Log.d("DetailActivity", "onCreate: on IF(favorite != null) statement")
-            isFavorite = true
-            setFabFav(isFavorite)
-            supportActionBar?.title = favorite.login
-            binding?.tvItemName?.text = favorite.name ?: "-"
-            binding?.tvItemLocation?.text = favorite.location ?: "-"
-            binding?.tvItemCompany?.text = favorite.company ?: "-"
-            binding?.tvItemRepository?.text = favorite.publicRepos.toString()
-            binding?.tvItemFollowers?.text = favorite.followers.toString()
-            binding?.tvItemFollowing?.text = favorite.following.toString()
-
-            Glide.with(this)
-                .load(favorite.avatarUrl)
-                .into(binding!!.imgItemPhoto)
-
-        } else {
-            detailViewModel.data(responseDetail?.login.toString())
-            detailViewModel.isFavorited.observe(this, {
-                isFavorite = it
-                setFabFav(isFavorite)
-                Log.d("DetailActivity", "onCreate: it = $it")
-            })
-
-            binding?.apply {
-                tvItemName.text = responseDetail?.name ?: "-"
-                tvItemLocation.text = responseDetail?.location ?: "="
-                tvItemCompany.text = responseDetail?.company ?: "-"
-                tvItemRepository.text = responseDetail?.publicRepos.toString()
-                tvItemFollowers.text = responseDetail?.followers.toString()
-                tvItemFollowing.text = responseDetail?.following.toString()
-            }
-
-            Glide.with(this)
-                .load(responseDetail?.avatarUrl)
-                .into(binding!!.imgItemPhoto)
-
-            supportActionBar?.title = responseDetail?.login
         }
     }
 

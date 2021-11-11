@@ -1,8 +1,8 @@
 package com.hikizan.myfundamentalsubthree.repository
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.hikizan.myfundamentalsubthree.database.Favorite
 import com.hikizan.myfundamentalsubthree.database.FavoriteDao
 import com.hikizan.myfundamentalsubthree.database.FavoriteRoomDatabase
@@ -12,7 +12,7 @@ import java.util.concurrent.Executors
 class FavoriteRepository(application: Application) {
     private val mFavoriteDao: FavoriteDao
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
-    private val favorited: MutableLiveData<Boolean> = MutableLiveData()
+    private var favorited:Boolean = false
 
     init {
         val db = FavoriteRoomDatabase.getDatabase(application)
@@ -25,22 +25,22 @@ class FavoriteRepository(application: Application) {
         executorService.execute { mFavoriteDao.insert(favorite) }
     }
 
-    fun delete(favorite: Favorite) {
-        executorService.execute { mFavoriteDao.delete(favorite) }
+    fun delete(favorite: Favorite?) {
+        executorService.execute { mFavoriteDao.delete(favorite)
+            Log.d("DetailActivityTo_DELETE", "FromRepository: DELETE SUCCESS")
+        }
     }
 
     fun getFavoritedUser(username: String) {
         executorService.execute {
             val favorite = mFavoriteDao.getFavoritedUser(username)
             if (favorite != null) {
-                favorited.postValue(true)
-            } else {
-                favorited.postValue(false)
+                favorited = true
             }
         }
     }
 
-    fun findSpecificUser(login: String?): LiveData<Favorite> = mFavoriteDao.findSpecificUser(login)
+    fun findSpecificUser(login: String?): LiveData<Favorite>? = mFavoriteDao.findSpecificUser(login)
 
-    val isFavorited: LiveData<Boolean> = favorited
+    var isFavorited: Boolean = favorited
 }
