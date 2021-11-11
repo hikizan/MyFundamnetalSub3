@@ -68,6 +68,7 @@ class DetailActivity : AppCompatActivity() {
                         }
                     })
                 }
+
                 isFavorite = false
                 setFabFav(false)
 
