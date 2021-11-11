@@ -57,22 +57,22 @@ class DetailActivity : AppCompatActivity() {
         binding?.fabFav?.setOnClickListener {
             if (isFavorite) {
 
-                if (favorite != null) {
-                    Log.d("DetailActivity_DELETE", "onCreate: from if(favorite != null) favorite is $favorite")
-                    /*
-                    detailViewModel.findSpecificUser(favorite?.login).observe(this, {
-                        if (it != null) {
+                if (favorited != null) {
+                    Log.d("DetailActivity_DELETE", "onCreate: from if(favorite != null) favorite is $favorite | favorited is $favorited")
+
+                    detailViewModel.findSpecificUser(favorited?.login)?.observe(this, {
+                        if (favorited != null) {
                             Log.d("DetailActivity_DELETE", "onCreate: from findUser by favorite.login to Delete it is $it")
                             detailViewModel.delete(it)
                         }
                     })
-                     */
+
                     //favorited = favorite
-                    detailViewModel.delete(favorited as Favorite)
+                    //detailViewModel.delete(favorited as Favorite)
                     favorited = null
                 } else {
                     Log.d("DetailActivity_DELETE", "onCreate: from else favorite is $favorite")
-                    detailViewModel.findSpecificUser(responseDetail?.login).observe(this, {
+                    detailViewModel.findSpecificUser(responseDetail?.login)?.observe(this, {
                         if (it != null) {
                             Log.d("DetailActivity_DELETE", "onCreate: from findUser by responseDetail.login to Delete it is $it")
                             detailViewModel.delete(it)
@@ -103,6 +103,7 @@ class DetailActivity : AppCompatActivity() {
                     }
                     Log.d("DetailActivity_INSERT", "onCreate: insert data to Favorite when else favorite now is -> $favorite ")
                     favorited = favorite
+                    Log.d("DetailActivity_INSERT", "onCreate: favorited = favorite, favorited now is -> $favorited ")
                     detailViewModel.insert(favorited as Favorite)
                 }
                 isFavorite = true

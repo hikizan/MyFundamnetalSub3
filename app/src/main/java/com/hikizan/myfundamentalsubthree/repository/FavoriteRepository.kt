@@ -1,6 +1,7 @@
 package com.hikizan.myfundamentalsubthree.repository
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.hikizan.myfundamentalsubthree.database.Favorite
@@ -25,13 +26,15 @@ class FavoriteRepository(application: Application) {
         executorService.execute { mFavoriteDao.insert(favorite) }
     }
 
-    fun delete(favorite: Favorite) {
+    fun delete(favorite: Favorite?) {
         executorService.execute { mFavoriteDao.delete(favorite) }
+        Log.d("FavoriteRepository", "delete: $favorite")
     }
 
     fun getFavoritedUser(username: String) {
         executorService.execute {
             val favorite = mFavoriteDao.getFavoritedUser(username)
+            Log.d("FavoriteRepository", "getFavoritedUser: favorite = $favorite")
             if (favorite != null) {
                 favorited.postValue(true)
             } else {
@@ -40,7 +43,15 @@ class FavoriteRepository(application: Application) {
         }
     }
 
-    fun findSpecificUser(login: String?): LiveData<Favorite> = mFavoriteDao.findSpecificUser(login)
+    /*
+    fun pullFavoritedUser(username: String) {
+        executorService.execute {
+            mFavoriteDao.getFavoritedUser(username)
+        }
+    }
+     */
+
+    fun findSpecificUser(login: String?): LiveData<Favorite>? = mFavoriteDao.findSpecificUser(login)
 
     val isFavorited: LiveData<Boolean> = favorited
 }
