@@ -58,11 +58,14 @@ class DetailActivity : AppCompatActivity() {
             if (isFavorite) {
 
                 if (fromRes != null){
+                    /*
                     detailViewModel.findSpecificUser(tempFavorite?.login)?.observe(this, {findUser ->
                         Log.d("DetailActivity_checkDel", "checkBeforeDelete: findUser = $findUser")
                         tempFavorite = findUser as Favorite
                         detailViewModel.delete(tempFavorite as Favorite)
                     })
+                     */
+                    detailViewModel.dataToDelete(tempFavorite?.login.toString())
                 }else{
                     Log.d("DetailActivity_DELETE", "onCreate: tempFavorite = $tempFavorite")
                     detailViewModel.delete(tempFavorite as Favorite)

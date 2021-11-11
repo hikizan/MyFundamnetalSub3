@@ -35,7 +35,7 @@ class FavoriteRepository(application: Application) {
         executorService.execute {
             val favorite = mFavoriteDao.getFavoritedUser(username)
             if (favorite != null) {
-                favorited = true
+                mFavoriteDao.delete(favorite)
             }
         }
     }
