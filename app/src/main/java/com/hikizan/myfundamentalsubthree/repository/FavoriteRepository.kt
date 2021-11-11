@@ -40,7 +40,11 @@ class FavoriteRepository(application: Application) {
         }
     }
 
-    fun findSpecificUser(login: String?): LiveData<Favorite> = mFavoriteDao.findSpecificUser(login)
+    fun findSpecificUser(login: String?) {
+        executorService.execute {
+            mFavoriteDao.findSpecificUser(login)
+        }
+    }
 
     val isFavorited: LiveData<Boolean> = favorited
 }

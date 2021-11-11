@@ -18,5 +18,5 @@ interface FavoriteDao {
     fun getFavoritedUser(username: String): Favorite?
 
     @Query("SELECT * from favorite WHERE login = :login")
-    fun findSpecificUser(login: String?): LiveData<Favorite>
+    fun findSpecificUser(login: String?): Favorite?
 }

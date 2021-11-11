@@ -25,6 +25,7 @@ class DetailActivity : AppCompatActivity() {
 
     private var favorite: Favorite? = null
     private var responseDetail: ResponseDetail? = null
+    private var favorited = Favorite()
     private lateinit var detailViewModel: DetailViewModel
 
 
@@ -56,17 +57,27 @@ class DetailActivity : AppCompatActivity() {
             if (isFavorite) {
 
                 if (favorite != null) {
+                    //favorited = favorite as Favorite
+                    /*
                     detailViewModel.findSpecificUser(favorite?.login).observe(this, {
                         if (it != null) {
                             detailViewModel.delete(it)
                         }
                     })
+                     */
+                    val usernameFav = detailViewModel.findSpecificUser(favorite?.login)
+                    }
+                    detailViewModel.delete(usernameFav as Favorite)
                 } else {
+                    /*
                     detailViewModel.findSpecificUser(responseDetail?.login).observe(this, {
                         if (it != null) {
                             detailViewModel.delete(it)
                         }
                     })
+                     */
+                    val usernameRes = detailViewModel.findSpecificUser(responseDetail?.login)
+                    detailViewModel.delete(usernameRes as Favorite)
                 }
                 isFavorite = false
                 setFabFav(false)
@@ -74,6 +85,7 @@ class DetailActivity : AppCompatActivity() {
             } else {
 
                 if (favorite != null) {
+                    //favorited = favorite as Favorite
                     detailViewModel.insert(favorite as Favorite)
                 } else {
                     favorite = Favorite()
@@ -87,6 +99,7 @@ class DetailActivity : AppCompatActivity() {
                         it.followers = responseDetail?.followers.toString()
                         it.following = responseDetail?.following.toString()
                     }
+                    //favorited = favorite as Favorite
                     detailViewModel.insert(favorite as Favorite)
                 }
                 isFavorite = true
