@@ -24,6 +24,7 @@ class DetailActivity : AppCompatActivity() {
     private var isFavorite = false
 
     private var favorite: Favorite? = null
+    private var favorited: Favorite? = null
     private var responseDetail: ResponseDetail? = null
     private lateinit var detailViewModel: DetailViewModel
 
@@ -42,6 +43,7 @@ class DetailActivity : AppCompatActivity() {
         }.attach()
 
         favorite = intent.getParcelableExtra(EXTRA_FAVORITE)
+        favorited = favorite
         Log.d("DetailActivity", "onCreate: favorite getParcelable : $favorite")
 
         responseDetail = intent.getParcelableExtra(EXTRA_DATA)
@@ -56,14 +58,23 @@ class DetailActivity : AppCompatActivity() {
             if (isFavorite) {
 
                 if (favorite != null) {
+                    Log.d("DetailActivity_DELETE", "onCreate: from if(favorite != null) favorite is $favorite")
+                    /*
                     detailViewModel.findSpecificUser(favorite?.login).observe(this, {
                         if (it != null) {
+                            Log.d("DetailActivity_DELETE", "onCreate: from findUser by favorite.login to Delete it is $it")
                             detailViewModel.delete(it)
                         }
                     })
+                     */
+                    //favorited = favorite
+                    detailViewModel.delete(favorited as Favorite)
+                    favorited = null
                 } else {
+                    Log.d("DetailActivity_DELETE", "onCreate: from else favorite is $favorite")
                     detailViewModel.findSpecificUser(responseDetail?.login).observe(this, {
                         if (it != null) {
+                            Log.d("DetailActivity_DELETE", "onCreate: from findUser by responseDetail.login to Delete it is $it")
                             detailViewModel.delete(it)
                         }
                     })
@@ -75,7 +86,9 @@ class DetailActivity : AppCompatActivity() {
             } else {
 
                 if (favorite != null) {
-                    detailViewModel.insert(favorite as Favorite)
+                    Log.d("DetailActivity_INSERT", "onCreate: insert data to Favorite when favorite != null -> $favorite ")
+                    favorited = favorite
+                    detailViewModel.insert(favorited as Favorite)
                 } else {
                     favorite = Favorite()
                     favorite?.let {
@@ -88,7 +101,9 @@ class DetailActivity : AppCompatActivity() {
                         it.followers = responseDetail?.followers.toString()
                         it.following = responseDetail?.following.toString()
                     }
-                    detailViewModel.insert(favorite as Favorite)
+                    Log.d("DetailActivity_INSERT", "onCreate: insert data to Favorite when else favorite now is -> $favorite ")
+                    favorited = favorite
+                    detailViewModel.insert(favorited as Favorite)
                 }
                 isFavorite = true
                 setFabFav(true)
