@@ -43,6 +43,7 @@ class DetailActivity : AppCompatActivity() {
 
         favorite = intent.getParcelableExtra(EXTRA_FAVORITE)
         Log.d("DetailActivity", "onCreate: favorite getParcelable : $favorite")
+        var favorited = favorite
 
         responseDetail = intent.getParcelableExtra(EXTRA_DATA)
 
@@ -55,18 +56,27 @@ class DetailActivity : AppCompatActivity() {
         binding?.fabFav?.setOnClickListener {
             if (isFavorite) {
 
-                if (favorite != null) {
+                if (favorite != null && favorited != null) {
+                    //favorited = favorite
+                    /*
                     detailViewModel.findSpecificUser(favorite?.login).observe(this, {
                         if (it != null) {
                             detailViewModel.delete(it)
                         }
                     })
+                     */
+                    detailViewModel.delete(favorite as Favorite)
+                    detailViewModel.delete(favorited as Favorite)
+                }else if (favorited != null){
+                    detailViewModel.delete(favorited as Favorite)
                 } else {
                     detailViewModel.findSpecificUser(responseDetail?.login).observe(this, {
                         if (it != null) {
-                            detailViewModel.delete(it)
+                            favorited = it
+                            detailViewModel.delete(favorited as Favorite)
                         }
                     })
+
                 }
                 isFavorite = false
                 setFabFav(false)
@@ -74,7 +84,7 @@ class DetailActivity : AppCompatActivity() {
             } else {
 
                 if (favorite != null) {
-                    detailViewModel.insert(favorite as Favorite)
+                    detailViewModel.insert(favorited as Favorite)
                 } else {
                     favorite = Favorite()
                     favorite?.let {
@@ -87,7 +97,8 @@ class DetailActivity : AppCompatActivity() {
                         it.followers = responseDetail?.followers.toString()
                         it.following = responseDetail?.following.toString()
                     }
-                    detailViewModel.insert(favorite as Favorite)
+                    favorited = favorite
+                    detailViewModel.insert(favorited as Favorite)
                 }
                 isFavorite = true
                 setFabFav(true)
