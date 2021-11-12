@@ -57,25 +57,14 @@ class DetailActivity : AppCompatActivity() {
         binding?.fabFav?.setOnClickListener {
             if (isFavorite) {
 
-                if (fromRes != null){
-                    /*
-                    detailViewModel.findSpecificUser(tempFavorite?.login)?.observe(this, {findUser ->
-                        Log.d("DetailActivity_checkDel", "checkBeforeDelete: findUser = $findUser")
-                        tempFavorite = findUser as Favorite
-                        detailViewModel.delete(tempFavorite as Favorite)
-                    })
-                     */
+                if (fromRes != null) {
                     detailViewModel.dataToDelete(tempFavorite?.login.toString())
-                }else{
-                    Log.d("DetailActivity_DELETE", "onCreate: tempFavorite = $tempFavorite")
+                } else {
                     detailViewModel.delete(tempFavorite as Favorite)
                 }
 
-                //tempFavorite = null
-
-
             } else {
-                Log.d("DetailActivity_INSERT", "onCreate: tempFavorite = $tempFavorite")
+
                 detailViewModel.insert(tempFavorite)
 
             }
@@ -110,8 +99,8 @@ class DetailActivity : AppCompatActivity() {
         responseDetail = null
     }
 
-    private fun setDataOnDetail(fromFavorite: Favorite?, responseDetail: ResponseDetail?){
-        if (responseDetail != null){
+    private fun setDataOnDetail(fromFavorite: Favorite?, responseDetail: ResponseDetail?) {
+        if (responseDetail != null) {
             binding?.apply {
                 tvItemName.text = responseDetail.name ?: "-"
                 tvItemLocation.text = responseDetail.location ?: "-"
@@ -126,7 +115,7 @@ class DetailActivity : AppCompatActivity() {
                 .into(binding!!.imgItemPhoto)
 
             supportActionBar?.title = responseDetail.login
-        }else{
+        } else {
             binding?.apply {
                 tvItemName.text = fromFavorite?.name ?: "-"
                 tvItemLocation.text = fromFavorite?.location ?: "-"
@@ -142,9 +131,9 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun checkFavorite(fromFavorite: Favorite?, responseDetail: ResponseDetail?){
+    private fun checkFavorite(fromFavorite: Favorite?, responseDetail: ResponseDetail?) {
 
-        when{
+        when {
 
             responseDetail != null -> {
                 fromRes = Favorite()
@@ -174,41 +163,24 @@ class DetailActivity : AppCompatActivity() {
             }
 
             fromFavorite != null -> tempFavorite = fromFavorite
+
         }
 
-        if (fromRes != null){
+        if (fromRes != null) {
             tempFavorite = fromRes
         }
 
-        detailViewModel.findSpecificUser(tempFavorite?.login)?.observe(this, {findUser ->
+        detailViewModel.findSpecificUser(tempFavorite?.login)?.observe(this, { findUser ->
             Log.d("DetailActivity_checkFav", "checkFavorite: findUser = $findUser")
-            if (findUser == null){
+            if (findUser == null) {
                 isFavorite = false
                 setFabFav(isFavorite)
-            }else{
+            } else {
                 isFavorite = true
                 setFabFav(isFavorite)
             }
             Log.d("DetailActivity_checkFav", "checkFavorite: isFavorite = $isFavorite")
         })
-
-
-        /*
-        val favorited = detailViewModel.findSpecificUser(tempFavorite?.login)
-        Log.d("DetailActivity", "checkFavorite: favorited = $favorited")
-        if (favorited != null){
-            isFavorite = true
-            setFabFav(isFavorite)
-        }else{
-            isFavorite = false
-            setFabFav(isFavorite)
-        }
-
-        detailViewModel.data(tempFavorite?.login.toString())
-        isFavorite = detailViewModel.isFavorited
-        Log.d("DetailActivity_checkFav", "checkFavorite: first isFavorite = $isFavorite")
-        setFabFav(isFavorite)
-         */
 
     }
 

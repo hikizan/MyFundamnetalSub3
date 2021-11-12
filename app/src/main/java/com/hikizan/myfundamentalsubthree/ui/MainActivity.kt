@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), UsersContract.usersView {
         adapter.notifyDataSetChanged()
         adapter.setOnItemClickCallback(object :
             GithubUserAdapter.OnItemClickCallback {
-            override fun onItemClicked(data: ResponseDetail) { //masukkan data list following dan followers disini
+            override fun onItemClicked(data: ResponseDetail) {
                 showSelectedGithubUser(data)
             }
         })

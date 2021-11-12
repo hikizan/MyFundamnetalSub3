@@ -17,12 +17,9 @@ class DetailViewModel(application: Application) : ViewModel() {
         mFavoriteRepository.delete(favorite)
     }
 
-    fun findSpecificUser(login: String?): LiveData<Favorite>? = mFavoriteRepository.findSpecificUser(login)
-
+    fun findSpecificUser(login: String?): LiveData<Favorite>? =
+        mFavoriteRepository.findSpecificUser(login)
 
     fun dataToDelete(username: String): Unit = mFavoriteRepository.getFavoritedUser(username)
-
-    var isFavorited: Boolean = mFavoriteRepository.isFavorited
-
 
 }

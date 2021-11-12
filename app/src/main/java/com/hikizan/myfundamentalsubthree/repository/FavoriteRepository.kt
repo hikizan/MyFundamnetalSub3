@@ -1,7 +1,6 @@
 package com.hikizan.myfundamentalsubthree.repository
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.hikizan.myfundamentalsubthree.database.Favorite
 import com.hikizan.myfundamentalsubthree.database.FavoriteDao
@@ -12,7 +11,6 @@ import java.util.concurrent.Executors
 class FavoriteRepository(application: Application) {
     private val mFavoriteDao: FavoriteDao
     private val executorService: ExecutorService = Executors.newSingleThreadExecutor()
-    private var favorited:Boolean = false
 
     init {
         val db = FavoriteRoomDatabase.getDatabase(application)
@@ -26,9 +24,7 @@ class FavoriteRepository(application: Application) {
     }
 
     fun delete(favorite: Favorite?) {
-        executorService.execute { mFavoriteDao.delete(favorite)
-            Log.d("DetailActivityTo_DELETE", "FromRepository: DELETE SUCCESS")
-        }
+        executorService.execute { mFavoriteDao.delete(favorite) }
     }
 
     fun getFavoritedUser(username: String) {
@@ -42,5 +38,4 @@ class FavoriteRepository(application: Application) {
 
     fun findSpecificUser(login: String?): LiveData<Favorite>? = mFavoriteDao.findSpecificUser(login)
 
-    var isFavorited: Boolean = favorited
 }
